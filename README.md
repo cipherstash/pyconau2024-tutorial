@@ -36,7 +36,7 @@ Now query the API:
 curl http://127.0.0.1:5000/users
 
 # List users with an exact matching secret (will return 1 result)
-curl http://127.0.0.1:5000/users?q=omgwtf
+curl http://127.0.0.1:5000/users?secret=omgwtf
 
 # List users with a partially matching secret (will return none)
 curl http://127.0.0.1:5000/users?q=omgwtf
