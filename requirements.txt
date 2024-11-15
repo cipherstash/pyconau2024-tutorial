@@ -1,12 +1,5 @@
 blinker==1.9.0
 click==8.1.7
-comm==0.2.2
-cryptography==41.0.2
-debugpy==1.8.7
-decorator==5.1.1
-defusedxml==0.7.1
-executing==2.1.0
-fastjsonschema==2.20.0
 Flask==3.1.0
 Flask-SQLAlchemy==3.1.1
 fqdn==1.5.1
