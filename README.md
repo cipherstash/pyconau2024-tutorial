@@ -10,7 +10,7 @@ Make sure you have these dependencies installed:
 - git
 - Docker
 
-Then:
+Then run the app:
 
 ```bash
 # Clone the repo
@@ -29,6 +29,18 @@ docker compose up -d
 flask run --debug
 ```
 
+Now query the API:
+
+```bash
+# List all users
+curl http://127.0.0.1:5000/users
+
+# List users with an exact matching secret (will return 1 result)
+curl http://127.0.0.1:5000/users?q=omgwtf
+
+# List users with a partially matching secret (will return none)
+curl http://127.0.0.1:5000/users?q=omgwtf
+```
 
 ## Development
 

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
 
-engine = create_engine("postgresql://postgres:postgres@localhost/pyconau_tute")
+engine = create_engine("postgresql://postgres:postgres@localhost/pyconau_tute", echo=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -19,6 +19,6 @@ def init_db():
     with engine.connect() as conn:
         conn.execute(text('TRUNCATE users'))
         conn.commit()
-    u = models.User('admin', 'admin@localhost')
+    u = models.User('admin', 'admin@localhost', 'omgwtfbbq')
     db_session.add(u)
     db_session.commit()
