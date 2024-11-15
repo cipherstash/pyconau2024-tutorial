@@ -4,7 +4,15 @@ Code that accompanies the Monday November 25 tutorial [How to secure, break, and
 
 ## Quickstart
 
-```
+Make sure you have these dependencies installed:
+
+- Python
+- git
+- Docker
+
+Then:
+
+```bash
 # Clone the repo
 git clone https://github.com/cipherstash/pyconau2024-tutorial
 cd pyconau2024-tutorial
@@ -13,6 +21,9 @@ cd pyconau2024-tutorial
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
+
+# Start the database
+docker compose up -d
 
 # Run the app
 flask run --debug
