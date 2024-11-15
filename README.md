@@ -17,3 +17,19 @@ pip install -r requirements.txt
 # Run the app
 flask run --debug
 ```
+
+
+## Development
+
+To update dependencies:
+
+```bash
+# Make sure the virtualenv is activated
+. .venv/bin/activate
+
+# Install the new dependency
+pip install -U Flask-SQLAlchemy
+
+# Update requirements
+pip freeze > requirements.txt
+```
