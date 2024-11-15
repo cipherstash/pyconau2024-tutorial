@@ -1,5 +1,8 @@
 blinker==1.9.0
+cffi==1.17.1
 click==8.1.7
+cryptography==43.0.3
+Faker==33.0.0
 Flask==3.1.0
 Flask-SQLAlchemy==3.1.1
 importlib_metadata==8.5.0
@@ -7,6 +10,9 @@ itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==3.0.2
 psycopg2==2.9.10
+pycparser==2.22
+python-dateutil==2.9.0.post0
+six==1.16.0
 SQLAlchemy==2.0.36
 SQLAlchemy-Utils==0.41.2
 typing_extensions==4.12.2
