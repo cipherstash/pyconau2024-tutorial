@@ -40,6 +40,12 @@ curl http://127.0.0.1:5000/users?secret=omgwtf
 
 # List users with a partially matching secret (will return none)
 curl http://127.0.0.1:5000/users?q=omgwtf
+
+# List users with a specific gender (will return many results)
+curl http://127.0.0.1:5000/users?g=F
+
+# List users with a specific gender (will return no results)
+curl http://127.0.0.1:5000/users?safer_gender=F
 ```
 
 ## Development

@@ -21,6 +21,14 @@ def users():
     if s:
         return User.query.where(User.secret == s).all()
 
+    g = request.args.get('gender')
+    if g:
+        return User.query.where(User.gender == g).all()
+
+    sg = request.args.get('safer_gender')
+    if sg:
+        return User.query.where(User.safer_gender == sg).all()
+
     return User.query.all()
 
 @app.teardown_appcontext
