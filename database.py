@@ -18,7 +18,7 @@ def init_db():
 
     # reset test data
     with engine.connect() as conn:
-        conn.execute(text('TRUNCATE users'))
+        conn.execute(text('TRUNCATE users, payment_methods'))
         conn.commit()
 
     # add a consistent record
