@@ -9,23 +9,17 @@ class User(Base):
     id: int
     name: str
     email: str
-    secret: str
-    gender: str
-    safer_gender: str
+    phone_number: str
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=False)
-    email = Column(String(120), unique=True)
-    secret = Column(StringEncryptedType(String, length=255, key='abc'))
-    gender = Column(StringEncryptedType(String, engine=AesEngine, length=255, key='abc'))
-    safer_gender = Column(StringEncryptedType(String, engine=AesGcmEngine, length=255, key='abc'))
+    name = Column(StringEncryptedType(String, length=120, key='abc', padding='pkcs5'))
+    email = Column(StringEncryptedType(String, length=120, key='abc', padding='pkcs5'))
+    phone_number = Column(StringEncryptedType(String, length=255, key='abc', padding='pkcs5'))
 
-    def __init__(self, name=None, email=None, secret=None, gender=None):
+    def __init__(self, name=None, email=None, phone_number=None):
         self.name = name
         self.email = email
-        self.secret = secret
-        self.gender = gender
-        self.safer_gender = gender
+        self.phone_number = phone_number
 
     def __repr__(self):
         return f'<User {self.name!r}>'

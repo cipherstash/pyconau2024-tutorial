@@ -26,7 +26,7 @@ def init_db():
     # add a bunch of fake data
     fake = Faker()
     Faker.seed(4321)
-    for _ in range(500):
-        u = models.User(fake.name(), fake.ascii_email(), fake.bs(), fake.passport_gender())
+    for _ in range(1000):
+        u = models.User(fake.name(), fake.ascii_email(), fake.phone_number())
         db_session.add(u)
     db_session.commit()
