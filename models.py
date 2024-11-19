@@ -1,6 +1,7 @@
 from typing import List
 from dataclasses import dataclass
-from sqlalchemy import Column, Integer, String, ForeignKey
+from datetime import time
+from sqlalchemy import Column, Integer, String, Time, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 from sqlalchemy_utils.types.encrypted.encrypted_type import StringEncryptedType, AesEngine, AesGcmEngine
 from database import Base
@@ -18,6 +19,7 @@ class User(Base):
     email = Column(StringEncryptedType(String, length=120, key='abc', padding='pkcs5'))
     phone_number = Column(StringEncryptedType(String, length=255, key='abc', padding='pkcs5'))
     payment_methods: Mapped[List["PaymentMethod"]] = relationship()
+    transactions: Mapped[List["Transactions"]] = relationship()
 
     def __init__(self, name=None, email=None, phone_number=None):
         self.name = name
@@ -43,3 +45,22 @@ class PaymentMethod(Base):
     def __repr__(self):
         return f'<User {self.id!r}>'
 
+@dataclass
+class Transactions(Base):
+    __tablename__ = "transaction"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    timestamp: time
+    amount: int
+    description: str
+
+    timestamp = Column(Time)
+    amount = Column(Integer)
+    description = Column(StringEncryptedType(String, length=255, key='abc', padding='pkcs5'))
+
+    def __init__(self, user_id=None, attrs=None):
+        self.user_id = user_id
+        self.attrs = attrs
+
+    def __repr__(self):
+        return f'<User {self.id!r}>'
