@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from database import db_session, init_db
 from models import User
+from sqlalchemy.orm import selectinload
 
 app = Flask(__name__)
 init_db()
@@ -12,7 +13,7 @@ def hello_world():
 
 @app.route("/users")
 def users():
-    return User.query.all()
+    return User.query.options(selectinload(User.payment_methods), selectinload(User.transactions)).all()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

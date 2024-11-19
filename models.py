@@ -47,7 +47,7 @@ class PaymentMethod(Base):
 
 @dataclass
 class Transactions(Base):
-    __tablename__ = "transaction"
+    __tablename__ = "transactions"
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     timestamp: time
