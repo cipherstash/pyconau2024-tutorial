@@ -34,6 +34,15 @@ Now query the API:
 ```bash
 # List all users
 curl http://127.0.0.1:5000/users
+
+# Search for users by exact name
+curl http://127.0.0.1:5000/users/search?name=Sarah%20Alvarez
+
+# Search for users by exact email
+curl http://127.0.0.1:5000/users/search?email=daniel02@brown.biz
+
+# Search for users by exact phone number
+curl http://127.0.0.1:5000/users/search?phone_number=214-800-3418
 ```
 
 If you need to reset the database at any point, run:
