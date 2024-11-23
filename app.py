@@ -52,6 +52,22 @@ def charge(payment_method_id):
     except Exception as e:
         return {"message": str(e)}, 500
 
+@app.route("/users/search")
+def users_search():
+    name = request.args.get('name')
+    if name:
+        return User.query.where(User.name_search == name).all()
+
+    email = request.args.get('email')
+    if email:
+        return User.query.where(User.email_search == email).all()
+
+    phone_number = request.args.get('phone_number')
+    if phone_number:
+        return User.query.where(User.phone_number_search == phone_number).all()
+
+    return []
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
