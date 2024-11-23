@@ -28,9 +28,9 @@ class User(Base):
     phone_number: str
 
     id = Column(Integer, primary_key=True)
-    name = Column(StringEncryptedType(String, length=120, engine=AesGcmEngine, key='secret', padding='pkcs5'))
-    email = Column(StringEncryptedType(String, length=120, engine=AesGcmEngine, key='secret', padding='pkcs5'))
-    phone_number = Column(StringEncryptedType(String, length=255, engine=AesGcmEngine, key='secret', padding='pkcs5'))
+    name = Column(StringEncryptedType(String, length=120, key='secret', padding='pkcs5', engine=AesGcmEngine))
+    email = Column(StringEncryptedType(String, length=120, key='secret', padding='pkcs5', engine=AesGcmEngine))
+    phone_number = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesGcmEngine))
     payment_methods: Mapped[List["PaymentMethod"]] = relationship()
     transactions: Mapped[List["Transactions"]] = relationship()
     # make the encrypted fields searchable by exact match
@@ -58,7 +58,7 @@ class PaymentMethod(Base):
     user_id: Mapped[int] =  mapped_column(ForeignKey("users.id"))
     attrs: str
 
-    attrs = Column(StringEncryptedType(String, length=255, engine=AesGcmEngine, key='secret', padding='pkcs5'))
+    attrs = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesGcmEngine))
 
     def __init__(self, user_id=None, attrs=None):
         self.user_id = user_id
@@ -78,7 +78,7 @@ class Transactions(Base):
 
     timestamp = Column(Time)
     amount = Column(Integer)
-    description = Column(StringEncryptedType(String, length=255, engine=AesGcmEngine, key='secret', padding='pkcs5'))
+    description = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesGcmEngine))
 
     def __init__(self, user_id=None, attrs=None):
         self.user_id = user_id
