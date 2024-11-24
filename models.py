@@ -36,14 +36,14 @@ class PaymentMethod(Base):
     user_id: Mapped[int] =  mapped_column(ForeignKey("users.id"))
     attrs: str
 
-    attrs = Column(StringEncryptedType(String, length=255, key='abc', padding='pkcs5'))
+    attrs = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesEngine))
 
     def __init__(self, user_id=None, attrs=None):
         self.user_id = user_id
         self.attrs = attrs
 
     def __repr__(self):
-        return f'<User {self.id!r}>'
+        return f'<PaymentMethod {self.id!r}>'
 
 @dataclass
 class Transactions(Base):
