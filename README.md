@@ -140,6 +140,9 @@ docker compose up -d
 
 # Install EQL
 psql -f cipherstash-eql.sql postgres://postgres:postgres@localhost/pyconau_tute
+
+# Reset the database configuration and test data
+python init_db.py
 ```
 
 If you need to reset the database at any point, run:
