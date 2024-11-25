@@ -19,7 +19,7 @@ headers = {
     "Authorization": f"Bearer {token}"
 }
 # The payment method we want to attack
-payment_method_id = 17
+payment_method_id = 2680
 
 @dataclass
 class PaymentMethod(Base):
