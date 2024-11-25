@@ -12,7 +12,7 @@ importlib_metadata==8.5.0
 itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==3.0.2
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
 pycparser==2.22
 python-dateutil==2.9.0.post0
 requests==2.32.3
