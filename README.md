@@ -25,6 +25,9 @@ pip install -r requirements.txt
 # Start the database
 docker compose up -d
 
+# Setup the database schema and fake data
+python init_db.py
+
 # Run the app
 flask run --debug
 ```
