@@ -5,13 +5,42 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: "pg_isready -U postgres"
+      interval: 1s
+      timeout: 5s
+      retries: 10
     ports:
       - ${PGPORT:-5432}:5432
     networks:
-      - my-network
+      - pyconau_tute
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
+  proxy:
+    container_name: pyconau_tute_proxy
+    image: cipherstash/cipherstash-proxy:cipherstash-proxy-v0.3.5
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - ${CS_PORT:-6432}:${CS_PORT:-6432}
+    environment:
+      CS_WORKSPACE_ID: $CS_WORKSPACE_ID
+      CS_CLIENT_ACCESS_KEY: $CS_CLIENT_ACCESS_KEY
+      CS_ENCRYPTION__CLIENT_ID: $CS_ENCRYPTION__CLIENT_ID
+      CS_ENCRYPTION__CLIENT_KEY: $CS_ENCRYPTION__CLIENT_KEY
+      CS_ENCRYPTION__DATASET_ID: $CS_DATASET_ID
+      CS_TEST_ON_CHECKOUT: "true"
+      CS_AUDIT__ENABLED: "false"
+      CS_DATABASE__PORT: 5432
+      CS_DATABASE__USERNAME: postgres
+      CS_DATABASE__PASSWORD: postgres
+      CS_DATABASE__NAME: pyconau_tute
+      CS_DATABASE__HOST: pyconau_tute_pg
+      CS_UNSAFE_LOGGING: "true"
+    networks:
+      - pyconau_tute
 
 networks:
-  my-network:
+  pyconau_tute:
     driver: bridge
