@@ -15,9 +15,9 @@ class User(Base):
     phone_number: str
 
     id = Column(Integer, primary_key=True)
-    name = Column(StringEncryptedType(String, length=120, key='abc', padding='pkcs5'))
-    email = Column(StringEncryptedType(String, length=120, key='abc', padding='pkcs5'))
-    phone_number = Column(StringEncryptedType(String, length=255, key='abc', padding='pkcs5'))
+    name = Column(StringEncryptedType(String, length=120, key='secret', padding='pkcs5'))
+    email = Column(StringEncryptedType(String, length=120, key='secret', padding='pkcs5'))
+    phone_number = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5'))
     payment_methods: Mapped[List["PaymentMethod"]] = relationship()
     transactions: Mapped[List["Transactions"]] = relationship()
 
@@ -56,7 +56,7 @@ class Transactions(Base):
 
     timestamp = Column(Time)
     amount = Column(Integer)
-    description = Column(StringEncryptedType(String, length=255, key='abc', padding='pkcs5'))
+    description = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5'))
 
     def __init__(self, user_id=None, attrs=None):
         self.user_id = user_id
