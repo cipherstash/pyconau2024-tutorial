@@ -14,7 +14,8 @@ class ShaEngine(EncryptionDecryptionBaseEngine):
     def encrypt(self, value):
         encoded = value.encode('utf-8')
         sha = hashlib.sha256(encoded)
-        return sha.hexdigest()
+        digest = sha.hexdigest()
+        return digest
 
     def decrypt(self, value):
         return ""
