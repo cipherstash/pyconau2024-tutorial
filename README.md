@@ -36,6 +36,12 @@ Now query the API:
 curl http://127.0.0.1:5000/users
 ```
 
+If you need to reset the database at any point, run:
+
+```bash
+python init_db.py
+```
+
 ## Development
 
 To update dependencies:

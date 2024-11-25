@@ -6,7 +6,6 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy_utils.types.encrypted.padding import InvalidPaddingError
 
 app = Flask(__name__)
-#init_db()
 
 @app.route("/")
 def hello_world():
@@ -33,7 +32,7 @@ def create_payment_method(user_id):
     user = User.query.get(user_id)
     if user is None:
         return {"message": "User not found"}, 404
-    
+
     payment_method = PaymentMethod(user_id=user_id, attrs=request.json)
     user.payment_methods.append(payment_method)
     db_session.add(payment_method)
