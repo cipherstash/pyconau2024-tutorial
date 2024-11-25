@@ -21,7 +21,8 @@ class User(Base):
     payment_methods: Mapped[List["PaymentMethod"]] = relationship()
     transactions: Mapped[List["Transactions"]] = relationship()
 
-    def __init__(self, name=None, email=None, phone_number=None):
+    def __init__(self, id, name=None, email=None, phone_number=None):
+        self.id = id
         self.name = name
         self.email = email
         self.phone_number = phone_number

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from database import db_session, init_db
 from models import User, PaymentMethod
@@ -7,9 +7,42 @@ from sqlalchemy_utils.types.encrypted.padding import InvalidPaddingError
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+# A dump authenication system for demonstration purposes
+# Hardcoded user ID to token mapping
+USER_TOKENS = {
+    1: "token123",
+    2: "token456",
+}
+
+def authenticate(func):
+    def wrapper(*args, **kwargs):
+        # Get the Authorization header
+        auth_header = request.headers.get("Authorization")
+        
+        if not auth_header:
+            return jsonify({"error": "Missing Authorization header"}), 401
+        
+        # Token should be in the format: "Bearer <token>"
+        try:
+            token_type, token_value = auth_header.split(" ")
+            if token_type.lower() != "bearer":
+                raise ValueError("Invalid token type")
+        except ValueError:
+            return jsonify({"error": "Invalid Authorization header format"}), 400
+        
+        # Verify the token
+        user_id = next((uid for uid, tok in USER_TOKENS.items() if tok == token_value), None)
+        if not user_id:
+            return jsonify({"error": "Invalid token"}), 403
+        
+        print("Authenticated user ID=%s", user_id)
+        # Add user_id to request context
+        request.user_id = user_id
+        
+        return func(*args, **kwargs)
+    wrapper.__name__ = func.__name__
+    return wrapper
+
 
 @app.route("/users")
 def users():
@@ -40,9 +73,14 @@ def create_payment_method(user_id):
     return "Created payment method"
 
 @app.route("/charge/<int:payment_method_id>", methods=["POST"])
+@authenticate
 def charge(payment_method_id):
     try:
         payment_method = PaymentMethod.query.get(payment_method_id)
+        print("Payment method=%s", payment_method)
+        if request.user_id != payment_method.user_id:
+            return {"message": "Unauthorized"}, 403
+        
         print("Charging payment method ID=%s", payment_method.attrs)
         # Charge the payment method
         return "Charged payment method"
