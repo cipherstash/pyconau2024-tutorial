@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from database import db_session, init_db
+from database import db_session
 from models import User, PaymentMethod
-from sqlalchemy.orm import selectinload
 from sqlalchemy_utils.types.encrypted.padding import InvalidPaddingError
 
 app = Flask(__name__)
