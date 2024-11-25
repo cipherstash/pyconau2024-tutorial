@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
 from faker import Faker
 
-engine = create_engine("postgresql://postgres:postgres@localhost/pyconau_tute", echo=True)
+engine = create_engine("postgresql://postgres:postgres@localhost:6432/pyconau_tute", echo=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
