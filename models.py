@@ -4,20 +4,8 @@ from dataclasses import dataclass
 from datetime import time
 from sqlalchemy import Column, Integer, String, Time, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
-from sqlalchemy_utils.types.encrypted.encrypted_type import StringEncryptedType, AesEngine, AesGcmEngine, EncryptionDecryptionBaseEngine
+from eqlpy.eqlalchemy import *
 from database import Base
-
-class ShaEngine(EncryptionDecryptionBaseEngine):
-    def _initialize_engine(self, parent_class_key):
-        pass
-
-    def encrypt(self, value):
-        encoded = value.encode('utf-8')
-        sha = hashlib.sha256(encoded)
-        return sha.hexdigest()
-
-    def decrypt(self, value):
-        return ""
 
 @dataclass
 class User(Base):
@@ -28,15 +16,11 @@ class User(Base):
     phone_number: str
 
     id = Column(Integer, primary_key=True)
-    name = Column(StringEncryptedType(String, length=120, key='secret', padding='pkcs5', engine=AesGcmEngine))
-    email = Column(StringEncryptedType(String, length=120, key='secret', padding='pkcs5', engine=AesGcmEngine))
-    phone_number = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesGcmEngine))
+    name = Column(EncryptedUtf8Str(__tablename__, "name"))
+    email = Column(EncryptedUtf8Str(__tablename__, "email"))
+    phone_number = Column(EncryptedUtf8Str(__tablename__, "phone_number"))
     payment_methods: Mapped[List["PaymentMethod"]] = relationship()
     transactions: Mapped[List["Transactions"]] = relationship()
-    # make the encrypted fields searchable by exact match
-    name_search = Column(StringEncryptedType(String, length=255, engine=ShaEngine, key='abc', padding='pkcs5'))
-    email_search = Column(StringEncryptedType(String, length=255, engine=ShaEngine, key='abc', padding='pkcs5'))
-    phone_number_search = Column(StringEncryptedType(String, length=255, engine=ShaEngine, key='abc', padding='pkcs5'))
 
     def __init__(self, name=None, email=None, phone_number=None):
         self.name = name
@@ -57,7 +41,7 @@ class PaymentMethod(Base):
     user_id: Mapped[int] =  mapped_column(ForeignKey("users.id"))
     attrs: str
 
-    attrs = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesGcmEngine))
+    attrs = Column(EncryptedUtf8Str(__tablename__, "attrs"))
 
     def __init__(self, user_id=None, attrs=None):
         self.user_id = user_id
@@ -76,8 +60,8 @@ class Transactions(Base):
     description: str
 
     timestamp = Column(Time)
-    amount = Column(Integer)
-    description = Column(StringEncryptedType(String, length=255, key='secret', padding='pkcs5', engine=AesGcmEngine))
+    amount = Column(EncryptedFloat(__tablename__, "amount"))
+    description = Column(EncryptedUtf8Str(__tablename__, "description"))
 
     def __init__(self, user_id=None, attrs=None):
         self.user_id = user_id

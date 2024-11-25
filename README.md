@@ -45,6 +45,22 @@ curl http://127.0.0.1:5000/users/search?email=daniel02@brown.biz
 curl http://127.0.0.1:5000/users/search?phone_number=214-800-3418
 ```
 
+## Step 3 — CipherStash EQL
+
+```bash
+# Change to the branch
+git checkout stage-3/cipherstash-encrypt-query-language
+
+# Install dependencies
+. .venv/bin/activate
+pip install -r requirements.txt
+
+# Tear down existing containers
+docker compose down
+# Set up Postgres and CipherStash Proxy
+docker compose up
+```
+
 If you need to reset the database at any point, run:
 
 ```bash
