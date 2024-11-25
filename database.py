@@ -26,7 +26,11 @@ def init_db():
     # add a bunch of fake data
     fake = Faker()
     Faker.seed(4321)
-    for _ in range(1000):
-        u = models.User(fake.name(), fake.ascii_email(), fake.phone_number())
+    for id in range(1000):
+        u = models.User(id, fake.name(), fake.ascii_email(), fake.phone_number())
         db_session.add(u)
+    db_session.commit()
+
+    pm = models.PaymentMethod(user_id=1, attrs="{'card_num': '444433332222111'}")
+    db_session.add(pm)
     db_session.commit()

